@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #030303;
+  --color-panel: #0a0a0b;
+  --color-line: #1c1c1f;
+  --color-mute: #8a8a93;
+  --color-cyan: #8ff0f4;
+  --color-orange: #ffb38a;
+  --color-pink: #ff9cc6;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Archivo Black", "Arial Black", sans-serif;
+}
+
+html, body { background: var(--color-void); color: #f2f2f2; }
+body { font-family: var(--font-mono); -webkit-font-smoothing: antialiased; }
+/* JetBrains Mono ligatures merge chars like ||-- and break ASCII art */
+pre { font-variant-ligatures: none; }
+::selection { background: var(--color-pink); color: var(--color-void); }
+
+/* film-grain texture over the whole screen, generated SVG noise so no image file is needed */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+.caret { animation: blink 1s steps(1) infinite; }
+
+@keyframes glitch {
+  0%, 92%, 100% { transform: none; text-shadow: none; }
+  93% { transform: translateX(-2px); text-shadow: 2px 0 var(--color-pink), -2px 0 var(--color-cyan); }
+  96% { transform: translateX(2px); text-shadow: -2px 0 var(--color-orange), 2px 0 var(--color-cyan); }
+}
+.glitch { animation: glitch 6s infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .caret, .glitch { animation: none; }
+}
