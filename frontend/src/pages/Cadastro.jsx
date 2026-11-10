@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AuthLayout from '../components/AuthLayout'
-import { Field, Submit, Notice, EMAIL_RE, fakeRequest } from '../components/Form'
+import { Field, Submit, Notice, EMAIL_RE } from '../components/Form'
+import { api, errorMessage } from '../api'
 
 // score 0-4: length, mixed case, digit, symbol
 export function strength(p) {
@@ -20,7 +21,7 @@ export default function Cadastro() {
   const [senha, setSenha] = useState('')
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
-  const [done, setDone] = useState(false)
+  const navigate = useNavigate()
   const score = strength(senha)
 
   async function onSubmit(e) {
@@ -35,22 +36,31 @@ export default function Cadastro() {
     setErrors(next)
     if (Object.keys(next).length) return
     setLoading(true)
-    await fakeRequest()
-    setLoading(false)
-    setDone(true)
+    try {
+      await api.register(f.nome.trim(), f.email, f.senha)
+      navigate('/cursos', { replace: true })
+    } catch (err) {
+      // field errors like { errors: { email: ['já em uso'] } } go under the matching input
+      const fe = err.data?.errors ?? {}
+      const fields = { nome: fe.name?.[0], email: fe.email?.[0], senha: fe.password?.[0] }
+      setErrors(Object.values(fields).some(Boolean) ? fields : { form: errorMessage(err) })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <AuthLayout
+      docTitle="Criar conta"
       step="02 / registro"
       cowSays="git init minha-carreira"
       httpCode="201"
       title={<>Criar<br /><span className="text-orange">acesso</span></>}
       subtitle="Grátis. Todas as trilhas do Curso em Vídeo, com seu progresso salvo."
-      footer={<>Já tem conta? <Link to="/login" className="text-cyan underline-offset-4 hover:underline">Entrar</Link></>}
+      footer={<>Já tem conta? <Link to="/login" className="text-cyan underline underline-offset-4">Entrar</Link></>}
     >
       <form onSubmit={onSubmit} noValidate className="space-y-6">
-        {done && <Notice tone="orange">Cadastro validado. A conexão com o servidor chega na próxima etapa.</Notice>}
+        {errors.form && <Notice tone="pink">{errors.form}</Notice>}
         <Field label="Nome" name="nome" autoComplete="name" placeholder="Seu nome" error={errors.nome} />
         <Field label="E-mail" name="email" type="email" autoComplete="email" placeholder="voce@email.com" error={errors.email} />
         <div>

@@ -19,9 +19,10 @@ const FEED = [
   ['PHP MODERNO', '62 aulas', 'text-pink'],
 ]
 
-export default function AuthLayout({ step, title, subtitle, children, footer, cowSays, httpCode }) {
+export default function AuthLayout({ docTitle, step, title, subtitle, children, footer, cowSays, httpCode }) {
   return (
     <div className="min-h-dvh grid lg:grid-cols-[1.15fr_1fr]">
+      <title>{`${docTitle} · Guacamole`}</title>
       {/* LEFT: brand / terminal panel */}
       <aside className="relative hidden lg:flex flex-col justify-between border-r border-line p-10 overflow-hidden" aria-hidden="true">
         <div className="pt-[12vh]">
@@ -61,7 +62,7 @@ export default function AuthLayout({ step, title, subtitle, children, footer, co
       {/* RIGHT: form */}
       <main className="flex flex-col px-4 py-8 sm:px-10 lg:px-16">
         <header className="flex items-center justify-between">
-          <Link to="/login" className="font-display text-lg tracking-tight focus-visible:outline-2 focus-visible:outline-cyan">
+          <Link to="/" className="font-display text-lg tracking-tight">
             GUACAMOLE<span className="text-orange">_</span>
           </Link>
           <span className="text-[11px] uppercase tracking-[0.2em] text-mute">[ {step} ]</span>

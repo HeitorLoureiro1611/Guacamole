@@ -21,12 +21,13 @@ export default function RecuperarSenha() {
 
   return (
     <AuthLayout
+      docTitle="Recuperar senha"
       step="03 / recuperar"
       cowSays="moo... esqueceu a senha?"
       httpCode="404"
       title={<>Recuperar<br /><span className="text-pink">senha</span></>}
       subtitle={sentTo ? null : 'Digite o e-mail da sua conta. Enviaremos um link para criar uma nova senha.'}
-      footer={<>Lembrou? <Link to="/login" className="text-cyan underline-offset-4 hover:underline">Voltar ao login</Link></>}
+      footer={<>Lembrou? <Link to="/login" className="text-cyan underline underline-offset-4">Voltar ao login</Link></>}
     >
       {sentTo ? (
         <div className="space-y-6">

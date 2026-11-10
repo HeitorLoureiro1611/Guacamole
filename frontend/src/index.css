@@ -16,6 +16,8 @@ html, body { background: var(--color-void); color: #f2f2f2; }
 body { font-family: var(--font-mono); -webkit-font-smoothing: antialiased; }
 /* JetBrains Mono ligatures merge chars like ||-- and break ASCII art */
 pre { font-variant-ligatures: none; }
+/* one visible keyboard focus ring for every link and button */
+:focus-visible { outline: 2px solid var(--color-orange); outline-offset: 2px; }
 ::selection { background: var(--color-pink); color: var(--color-void); }
 
 /* film-grain texture over the whole screen, generated SVG noise so no image file is needed */

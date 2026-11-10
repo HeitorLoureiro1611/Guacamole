@@ -28,7 +28,7 @@ export function Field({ label, error, hint, action, type = 'text', ...props }) {
             onClick={() => setShow((s) => !s)}
             aria-label={show ? 'Ocultar senha' : 'Mostrar senha'}
             aria-pressed={show}
-            className="px-4 py-3.5 text-[11px] uppercase tracking-widest text-mute hover:text-cyan focus-visible:text-cyan outline-none"
+            className="px-4 py-3.5 text-[11px] uppercase tracking-widest text-mute hover:text-cyan focus-visible:text-cyan"
           >
             {show ? 'ocultar' : 'ver'}
           </button>
@@ -43,17 +43,23 @@ export function Field({ label, error, hint, action, type = 'text', ...props }) {
   )
 }
 
+// brutalist primary button look, shared by <Submit> and link-buttons across the app
+export const BTN = `inline-block bg-cyan px-6 py-4 font-display uppercase tracking-wide text-void
+  shadow-[6px_6px_0_var(--color-pink)] transition-[transform,box-shadow]
+  hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[8px_8px_0_var(--color-pink)]
+  active:translate-x-1 active:translate-y-1 active:shadow-[2px_2px_0_var(--color-pink)]
+  focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange
+  disabled:opacity-60 disabled:cursor-wait`
+export const BTN_GHOST = `inline-block border border-line px-6 py-4 font-display uppercase tracking-wide text-white
+  transition-colors hover:border-cyan hover:text-cyan focus-visible:outline-2 focus-visible:outline-offset-4
+  focus-visible:outline-orange disabled:opacity-60`
+
 export function Submit({ children, loading }) {
   return (
     <button
       type="submit"
       disabled={loading}
-      className="group relative w-full bg-cyan px-6 py-4 font-display uppercase tracking-wide text-void
-                 shadow-[6px_6px_0_var(--color-pink)] transition-[transform,box-shadow]
-                 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[8px_8px_0_var(--color-pink)]
-                 active:translate-x-1 active:translate-y-1 active:shadow-[2px_2px_0_var(--color-pink)]
-                 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange
-                 disabled:opacity-60 disabled:cursor-wait"
+      className={`${BTN} w-full`}
     >
       <span className="flex items-center justify-between">
         {loading ? 'processando…' : children}
@@ -74,5 +80,5 @@ export function Notice({ tone = 'cyan', children }) {
 
 export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-// shortcut: fake latency until the backend auth endpoints exist, replace with real fetch calls
+// shortcut: password recovery has no route in api_cursos.md, so RecuperarSenha only simulates; replace when the backend adds one
 export const fakeRequest = () => new Promise((r) => setTimeout(r, 900))
